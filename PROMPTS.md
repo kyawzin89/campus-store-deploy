@@ -13,3 +13,10 @@
 * **AI Output:** `$table->string('role')->default('cashier');` added to users migration table schema.
 * **Hand Changes:** Accepted inline proposal and verified default value enforces the principle of least privilege for new accounts.
 * **Commit:** (pending)
+### Entry 3
+* **Date:** 2026-11-11
+* **Tool:** GitHub Copilot (Inline) & Gemini
+* **Prompt:** "Design the minimal database migration schema for the Categories table to support product classification and 1:N relational integrity, removing leftover template artifacts."
+* **AI Output:** Clean schema definition using `Blueprint` with unique constraints on category names and soft rollback handling.
+* **Hand Changes:** Verified field types, ensured single source of truth for POS catalog filtering, and purged unnecessary template boilerplate.
+* **Commit:** (pending)

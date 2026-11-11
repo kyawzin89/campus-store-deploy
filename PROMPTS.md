@@ -20,3 +20,10 @@
 * **AI Output:** Clean schema definition using `Blueprint` with unique constraints on category names and soft rollback handling.
 * **Hand Changes:** Verified field types, ensured single source of truth for POS catalog filtering, and purged unnecessary template boilerplate.
 * **Commit:** (pending)
+### Entry 4
+* **Date:** 2026-11-11
+* **Tool:** Gemini
+* **Prompt:** "Generate the database migration schema for the Products table supporting 1:N category relationship with restrictOnDelete constraint, decimal price precision, non-negative stock counts, and soft delete capabilities."
+* **AI Output:** Migration blueprint containing `foreignId('category_id')`, `decimal('price', 10, 2)`, `unsignedInteger('stock_quantity')`, and `softDeletes()` with descriptive inline comments.
+* **Hand Changes:** Verified foreign key references match categories table naming, confirmed decimal precision avoids floating-point issues, and enabled soft deletes to preserve sales receipt integrity.
+* **Commit:** (pending)

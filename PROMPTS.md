@@ -1,57 +1,7 @@
-# PROMPTS.md: AI usage log
-
-**Student:** _your name_
-**Project:** _your app's name and one-line description_
-**AI tools used:** _e.g. ChatGPT, Claude, Copilot, Cursor_
-
-## Rules (from the assignment)
-
-- One step = one small, working change. Commit after every step.
-- At least **40 commits on at least 12 different days** (most projects land between 60 and 100). Tiny commits piled up on the last night do not count.
-- Add one entry below for **every** commit, newest at the bottom.
-- Copy your prompt **exactly** as you typed it. Do not tidy it up afterwards.
-- Steps you wrote yourself are logged too: write `no AI` as the tool.
-- "What I changed by hand" is the most important field. If you changed nothing, say so and explain how you checked the code was right.
-- Fill in the commit hash after you commit (`git log --oneline -1`).
-
----
-
-## Entry template (copy this block for each step)
-
-### Step N: _short title_
-
-- **Date:**
-- **Tool:**
-- **Prompt:**
-  ```text
-  paste your exact prompt here
-  ```
-- **What the AI produced:** _one line, e.g. "migration, model and factory for Product"_
-- **What I changed by hand and why:**
-- **How I checked it works:** _e.g. ran `php artisan test`, tried it in Postman_
-- **Commit:** `abc1234`
-
----
-
-## Example entry
-
-### Step 3: Product model and migration
-
-- **Date:** 2026-11-12
-- **Tool:** ChatGPT
-- **Prompt:**
-  ```text
-  In my Laravel 12 API, create a migration, model and factory for Product with
-  name (string), sku (unique string), price (decimal 8,2), stock (integer, default 0)
-  and a category_id foreign key to categories. A Product belongs to a Category.
-  ```
-- **What the AI produced:** migration, `Product` model with `belongsTo(Category)`, factory.
-- **What I changed by hand and why:** the AI used `float` for price; I changed it to `decimal(8, 2)` because floats round money badly. Added `cascadeOnDelete()` on `category_id`. Added `price` to `$casts` as `decimal:2`.
-- **How I checked it works:** `php artisan migrate:fresh --seed`, then checked the table in TablePlus.
-- **Commit:** `4f9c2d1`
-
----
-
-## My log
-
-<!-- Start your entries here. -->
+### Entry 1
+* **Date:** 2026-11-11
+* **Tool:** Gemini
+* **Prompt:** "Analyze the IT341 final project specifications and help me design a streamlined Product Requirements Document (PRD) for a Campus Convenience Store Inventory and Point-of-Sale (POS) application. Ensure the architecture strictly satisfies baseline requirements: 5 relational entities, one 1:N relationship, one M:N relationship with extra pivot attributes, two server-enforced transactional business rules, Sanctum token authentication, and a three-screen React frontend."
+* **AI Output:** Structured the PRD across 10 sections adhering to the course starter template: defined user personas (Cashier and Admin), detailed 10 user stories with Gherkin-style acceptance criteria, specified 2 atomic business rules (stock deduction guard and policy-based catalog protection), mapped out an 11-endpoint REST API schema, and scoped a minimal React interface.
+* **Hand Changes:** Tailored the problem statement to our campus kiosk workflow, reduced the endpoint count to eliminate out-of-scope complexity, verified that the `order_items` pivot carries necessary snapshot pricing (`unit_price`, `subtotal`), and confirmed that all level-ups remain deferred to prioritize core baseline stability.
+* **Commit:** 

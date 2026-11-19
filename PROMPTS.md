@@ -27,3 +27,10 @@
 * **AI Output:** Migration blueprint containing `foreignId('category_id')`, `decimal('price', 10, 2)`, `unsignedInteger('stock_quantity')`, and `softDeletes()` with descriptive inline comments.
 * **Hand Changes:** Verified foreign key references match categories table naming, confirmed decimal precision avoids floating-point issues, and enabled soft deletes to preserve sales receipt integrity.
 * **Commit:** (pending)
+### Entry 5
+* **Date:** 2026-11-19
+* **Tool:** Gemini
+* **Prompt:** "Design the database migration schema for the Orders table linking each sale to the responsible cashier (`user_id`), storing exact `total_amount` in decimal format, and tracking order status."
+* **AI Output:** Laravel migration blueprint defining `foreignId('user_id')` with `restrictOnDelete()`, `decimal('total_amount', 10, 2)`, and `string('status')->default('completed')`.
+* **Hand Changes:** Verified foreign key references `users` table, added descriptive Burmese inline comments, and confirmed status defaults align with instant POS checkout workflow.
+* **Commit:** (pending)

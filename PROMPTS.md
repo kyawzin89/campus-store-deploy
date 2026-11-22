@@ -47,3 +47,12 @@
 * **Hand Changes:** Verified every diagram column matches existing Laravel migrations and aligned level-up targets with Week 2 API endpoints.
 * **Commit:** 850ed01
 
+### Entry 7
+* **Date:** 2026-11-22
+* **Tool:** Gemini
+* **Prompt:** "Create the database migration schema for the `order_items` pivot table linking `orders` (with cascade delete) and `products` (with restrict delete), capturing `quantity` and historical `unit_price` snapshot."
+* **AI Output:** Migration schema defining `order_id` and `product_id` foreign keys, `unsignedInteger('quantity')`, and `decimal('unit_price', 10, 2)` with inline comments.
+* **Hand Changes:** Added closing class bracket, added Burmese inline comments, and verified full schema build via `php artisan migrate:fresh`.
+* **Commit:** 6e4c9e5
+
+

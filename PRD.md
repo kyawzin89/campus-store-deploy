@@ -1,7 +1,7 @@
 # PRD: Campus Convenience Store Inventory & POS System
 
 **Student:** Trust Wesley
-**Version:** 1.0, 2026-11-11
+**Version:** 1.1, 2026-11-22
 **Due:** Day 3 of Week 1
 
 ---
@@ -78,68 +78,58 @@ The 2 cashiers and 1 store manager at the campus mini-mart currently track stock
 
 ## 5. Data model and architecture
 
-### Entities
-* `User`: `id`, `name`, `email`, `password`, `role` (`admin` | `cashier`).
-* `Category`: `id`, `name`.
-* `Product`: `id`, `category_id`, `name`, `price`, `stock_quantity`, `deleted_at` (soft deletes enabled).
-* `Order`: `id`, `user_id`, `total_amount`, `created_at`.
-* `OrderItem` (*Pivot*): `id`, `order_id`, `product_id`, `quantity`, `unit_price`, `subtotal`.
+### Entity Relationship Diagram (ERD)
 
-### Relationships
-* `Category` has many `Products` (1:N)
-* `User` has many `Orders` (1:N)
-* `Order` belongs to many `Products` via `order_items` pivot table carrying extra attributes (`quantity`, `unit_price`, `subtotal`) (M:N)
+```mermaid
+erDiagram
+    USERS ||--o{ ORDERS : "processes"
+    CATEGORIES ||--o{ PRODUCTS : "classifies"
+    ORDERS ||--|{ ORDER_ITEMS : "contains"
+    PRODUCTS ||--o{ ORDER_ITEMS : "sold_in"
 
-### Architecture
-* **Frontend:** React (Vite SPA) calling the API over HTTPS.
-* **Backend:** Laravel 12 REST API returning JSON only via API Resources.
-* **Database:** SQLite in local development; PostgreSQL / MySQL on cloud deployment.
+    USERS {
+        bigint id PK
+        string name
+        string email UK
+        string password
+        string role "admin | cashier (default: cashier)"
+        timestamp created_at
+        timestamp updated_at
+    }
 
----
+    CATEGORIES {
+        bigint id PK
+        string name UK
+        timestamp created_at
+        timestamp updated_at
+    }
 
-## 6. API plan
+    PRODUCTS {
+        bigint id PK
+        bigint category_id FK
+        string name
+        decimal price "10,2"
+        unsignedInteger stock_quantity "default: 0"
+        timestamp deleted_at "nullable (soft delete)"
+        timestamp created_at
+        timestamp updated_at
+    }
 
-| Method | Endpoint | Auth | Role | Purpose |
-| --- | --- | --- | --- | --- |
-| `POST` | `/api/login` | No | Public | Authenticate and issue Sanctum token |
-| `POST` | `/api/logout` | Yes | Any | Revoke current token |
-| `GET` | `/api/user` | Yes | Any | Get authenticated user info and role |
-| `GET` | `/api/categories` | Yes | Any | List categories for POS filtering |
-| `GET` | `/api/products` | Yes | Any | Paginated product search, filter, and sort |
-| `GET` | `/api/products/{id}` | Yes | Any | View single product |
-| `POST` | `/api/products` | Yes | Admin | Create new product |
-| `PUT` | `/api/products/{id}` | Yes | Admin | Update product details |
-| `DELETE` | `/api/products/{id}` | Yes | Admin | Soft-delete product |
-| `POST` | `/api/orders` | Yes | Any | Checkout sale (enforces Rule 1) |
-| `GET` | `/api/orders` | Yes | Any | List sales history |
-| `GET` | `/api/orders/{id}/items` | Yes | Any | View line items for a specific order |
+    ORDERS {
+        bigint id PK
+        bigint user_id FK
+        decimal total_amount "10,2"
+        string status "default: completed"
+        timestamp created_at
+        timestamp updated_at
+    }
 
----
-
-## 7. Frontend plan
-
-* **Framework:** React SPA (Vite)
-* **Screens:**
-  1. **Login Screen:** Email and password input, stores token upon success.
-  2. **POS Checkout Screen:** Product search bar, category chips, product cards with real-time stock counts, cart sidebar, and checkout action.
-  3. **Product Inventory Screen (Admin):** Data table of products with pagination, search, "Add Product" modal, edit modal, and soft-delete confirmation.
-
----
-
-## 8. Level-ups
-
-* None planned for baseline 80-point submission.
-
----
-
-## 9. Out of scope
-
-* Barcode hardware scanner drivers (handled via text input search).
-* Physical receipt printer hardware integration.
-* Returns and customer refund processing.
-
----
-
-## 10. Changelog
-
-* **2026-11-11:** Initial PRD drafted following the starter template, scoping 5 models, Sanctum auth, 2 business rules, and 3 React screens.
+    ORDER_ITEMS {
+        bigint id PK
+        bigint order_id FK
+        bigint product_id FK
+        unsignedInteger quantity
+        decimal unit_price "10,2 (historical snapshot)"
+        timestamp created_at
+        timestamp updated_at
+    }

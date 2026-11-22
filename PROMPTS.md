@@ -61,6 +61,7 @@
 * **Prompt:** "Configure all 5 Eloquent models (User, Category, Product, Order, OrderItem) with fillable attributes, decimal/integer casts, SoftDeletes on Product, Sanctum HasApiTokens on User, and full 1:N and M:N relationships."
 * **AI Output:** Complete Eloquent model definitions implementing `hasMany`, `belongsTo`, and `belongsToMany` with pivot attributes (`quantity`, `unit_price`).
 * **Hand Changes:** Reviewed model relationships and casts against database migrations.
-* **Commit:** <PASTE_HASH_HERE>
+* **Commit:** 625d13f
+
 
 

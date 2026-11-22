@@ -81,4 +81,13 @@
 * **Commit:** cf20cf7
 
 
+### Entry 11
+* **Date:** 2026-11-22
+* **Tool:** Gemini
+* **Prompt:** "Implement CategoryController, ProductController (search, category filter, low-stock <= 5 alert, soft deletes), and OrderController (atomic DB::transaction checkout with lockForUpdate overselling protection, unit_price snapshots, and daily sales summary) and register role-protected endpoints in routes/api.php."
+* **AI Output:** Complete REST API controllers and Sanctum + Admin-protected routes enforcing stock integrity and RBAC.
+* **Hand Changes:** Verified API route registration via `php artisan route:list --path=api`.
+* **Commit:** <PASTE_HASH_HERE>
+
+
 

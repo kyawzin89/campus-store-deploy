@@ -72,4 +72,13 @@
 * **Commit:** 3c1c5ad
 
 
+### Entry 10
+* **Date:** 2026-11-22
+* **Tool:** Gemini
+* **Prompt:** "Implement Sanctum AuthController (login, me, logout) and EnsureUserIsAdmin RBAC middleware, and register the 'admin' middleware alias in bootstrap/app.php."
+* **AI Output:** Token-based authentication controller and role-checking middleware returning 403 Forbidden for non-admin users.
+* **Hand Changes:** Registered `admin` middleware alias in `bootstrap/app.php`.
+* **Commit:** cf20cf7
+
+
 

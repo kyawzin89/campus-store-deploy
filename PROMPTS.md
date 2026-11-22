@@ -63,5 +63,13 @@
 * **Hand Changes:** Reviewed model relationships and casts against database migrations.
 * **Commit:** 625d13f
 
+### Entry 9
+* **Date:** 2026-11-22
+* **Tool:** Gemini
+* **Prompt:** "Create an idempotent DatabaseSeeder with Admin and Cashier user accounts, 4 campus store categories, and 12 products including low-stock items (<= 5 units) for threshold and overselling testing."
+* **AI Output:** `DatabaseSeeder` using `updateOrCreate` and `firstOrCreate` to populate staff logins, categories, and 12 realistic campus store products.
+* **Hand Changes:** Verified fresh database build and seeding via `php artisan migrate:fresh --seed`.
+* **Commit:** 3c1c5ad
+
 
 

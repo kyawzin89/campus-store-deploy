@@ -3,59 +3,65 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-/**
- * Token-based authentication with Laravel Sanctum.
- *
- * The frontend sends the token it receives here in every request:
- *   Authorization: Bearer <token>
- */
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request): JsonResponse
+    /**
+     * Issue a Sanctum API token for valid staff credentials.
+     */
+    public function login(Request $request): JsonResponse
     {
-        $user = User::create($request->validated());
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
 
-        return response()->json([
-            'user' => new UserResource($user),
-            'token' => $user->createToken('api')->plainTextToken,
-        ], 201);
-    }
+        $user = User::where('email', $credentials['email'])->first();
 
-    public function login(LoginRequest $request): JsonResponse
-    {
-        $user = User::where('email', $request->validated('email'))->first();
-
-        if (! $user || ! Hash::check($request->validated('password'), $user->password)) {
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['These credentials do not match our records.'],
+                'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
+        $token = $user->createToken('campus-store-token')->plainTextToken;
+
         return response()->json([
-            'user' => new UserResource($user),
-            'token' => $user->createToken('api')->plainTextToken,
+            'message' => 'Login successful.',
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+            ],
         ]);
     }
 
-    public function logout(Request $request): JsonResponse
+    /**
+     * Return the currently authenticated staff member.
+     */
+    public function me(Request $request): JsonResponse
     {
-        // Revoke only the token used for this request.
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json(['message' => 'Logged out.']);
+        return response()->json([
+            'user' => $request->user(),
+        ]);
     }
 
-    public function user(Request $request): UserResource
+    /**
+     * Revoke the current access token.
+     */
+    public function logout(Request $request): JsonResponse
     {
-        return new UserResource($request->user());
+        $request->user()->currentAccessToken()?->delete();
+
+        return response()->json([
+            'message' => 'Logged out successfully.',
+        ]);
     }
 }

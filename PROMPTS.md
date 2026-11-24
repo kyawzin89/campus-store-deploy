@@ -96,7 +96,7 @@
 * **Prompt:** "Build WebStoreController, web session routes, and Tailwind Blade templates for Staff Login, interactive POS Checkout terminal with transactional stock locking, and Admin Inventory & Daily Sales Dashboard."
 * **AI Output:** Complete Blade frontend views (`layouts/app`, `auth/login`, `pos/index`, `admin/inventory`) and `WebStoreController`.
 * **Hand Changes:** Verified live Admin and Cashier workflows in the browser at `http://127.0.0.1:8000`.
-* **Commit:** <PASTE_HASH_HERE>
+* **Commit:** <2b71a61E>
 
 
 
@@ -109,3 +109,11 @@
 * **AI Output:** Complete Blade frontend views (`layouts/app`, `auth/login`, `pos/index`, `admin/inventory`) and `WebStoreController`.
 * **Hand Changes:** Verified live Admin and Cashier workflows in the browser at `http://127.0.0.1:8000`.
 * **Commit:** 24af93a
+
+### Entry 13
+* **Date:** 2026-11-24
+* **Tool:** Gemini
+* **Prompt:** "Write automated PHPUnit feature tests in CampusStoreFeatureTest covering Sanctum staff login, Cashier 403 RBAC enforcement, atomic POS checkout stock deduction and unit_price snapshotting, 422 overselling rejection, and Admin low-stock and daily sales analytics."
+* **AI Output:** Complete 5-test feature suite (`tests/Feature/CampusStoreFeatureTest.php`) passing 26 assertions.
+* **Hand Changes:** Removed obsolete starter boilerplate tests (`AuthTest.php`, `NoteApiTest.php`) and verified `php artisan test` passes 100%.
+* **Commit:** 4ff4f5c

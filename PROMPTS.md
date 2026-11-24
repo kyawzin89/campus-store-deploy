@@ -117,3 +117,11 @@
 * **AI Output:** Complete 5-test feature suite (`tests/Feature/CampusStoreFeatureTest.php`) passing 26 assertions.
 * **Hand Changes:** Removed obsolete starter boilerplate tests (`AuthTest.php`, `NoteApiTest.php`) and verified `php artisan test` passes 100%.
 * **Commit:** 4ff4f5c
+
+### Entry 14
+* **Date:** 2026-11-24
+* **Tool:** Gemini
+* **Prompt:** "Write a submission-ready README.md documenting features, setup instructions, seeded demo credentials, and automated test commands."
+* **AI Output:** Complete README.md with setup instructions, demo accounts, and test command.
+* **Hand Changes:** Committed and pushed README.md to main.
+* **Commit:** f057247

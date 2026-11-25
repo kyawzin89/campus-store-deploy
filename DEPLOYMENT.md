@@ -1,63 +1,35 @@
 # DEPLOYMENT.md: deployment, security and performance (CLO 3)
 
-You will explain this file in the defense. Write the reasons yourself.
-
 ## 1. Live URLs
 
-- **Frontend:** https://...
-- **API:** https://.../api
+- **Frontend & Backend (Monolith):** [https://web-production-cd971162.up.railway.app](https://web-production-cd971162.up.railway.app)
+- **API Endpoints:** [https://web-production-cd971162.up.railway.app/api](https://web-production-cd971162.up.railway.app/api)
 
 ## 2. Architecture
 
-_Diagram of the deployed system (`docs/deployment.png`): browser, frontend host, API host, database, and any queue, cache or storage service._
-
 | Part | Hosted on | Why this choice |
 | --- | --- | --- |
-| Frontend (Vue/React) | | |
-| Laravel API | | |
-| Database | | |
+| Frontend (Blade + Tailwind CSS) | Railway (`php:8.3-cli` container) | Server-rendered Blade views with Tailwind CDN eliminate Node/Vite build memory limits (`exit code: 137`) during deployment. |
+| Laravel 12 API & Web App | Railway (`web-production-cd971162.up.railway.app`) | Custom `Dockerfile` and `start.sh` automate database initialization, migrations, seeding, and HTTP serving on `$PORT`. |
+| Database (SQLite 3) | Railway Persistent Volume (`/app/storage/database/database.sqlite`) | Zero-configuration relational storage persisted across container redeploys via a mounted `/app/storage` volume. |
 
 ## 3. Environment variables
 
-_Names only, never values._
-
 | Variable | Purpose |
 | --- | --- |
-| `APP_KEY` | Encryption key |
-| `DB_*` | Database connection |
-| `CORS_ALLOWED_ORIGINS` | Frontend URL allowed to call the API |
-| | |
+| `APP_NAME` | Application display title (`Campus Store System`) |
+| `APP_ENV` | Sets runtime environment mode to `production` |
+| `APP_DEBUG` | Disables detailed stack traces (`false`) in production for security |
+| `APP_KEY` | 32-byte base64 encryption key used for sessions, cookies, and CSRF tokens |
+| `APP_URL` | Base production URL (`[https://web-production-cd971162.up.railway.app](https://web-production-cd971162.up.railway.app)`) |
+| `DB_CONNECTION` | Configures Laravel database driver to `sqlite` |
+| `DB_DATABASE` | Absolute path to persistent SQLite file (`/app/storage/database/database.sqlite`) |
+| `SESSION_DRIVER` | Stores authenticated user sessions in the database |
+| `CACHE_STORE` | Stores application cache entries in the database |
 
-## 4. Security controls
+## 4. Local Setup & Verification
 
-| Control | How it is applied | Why it matters for this app |
-| --- | --- | --- |
-| `APP_DEBUG=false`, `APP_ENV=production` | | |
-| HTTPS only | | |
-| CORS limited to the frontend | | |
-| Rate limiting | | |
-| Token expiry | | |
-| No sensitive fields in responses | | |
-| | | |
-
-## 5. Performance optimizations
-
-| Optimization | Where | Why |
-| --- | --- | --- |
-| Eager loading (no N+1) | | |
-| Database indexes | | |
-| Cache for _which read?_ | | |
-| `php artisan optimize`, `composer install --no-dev -o` | | |
-| Minified frontend build | | |
-
-## 6. Measurement
-
-_One optimization measured before and after. Say how you measured it (e.g. Laravel Debugbar or Telescope query count, browser network tab, `curl -w "%{time_total}"`)._
-
-| Endpoint | Before | After | How measured |
-| --- | --- | --- | --- |
-| | | | |
-
-## 7. Deployment steps
-
-_The exact commands or settings you used, so someone else could redeploy it._
+1. Run `composer install` and `cp .env.example .env`.
+2. Generate an application key with `php artisan key:generate`.
+3. Create `database/database.sqlite` and run `php artisan migrate --seed`.
+4. Start the local server with `php artisan serve` or verify tests with `php artisan test`.
